@@ -46,5 +46,27 @@ int main()
         cout << i << " :" << dpt_array[i].id << " | " << dpt_array[i].value << endl;
     }
     
+    
+    //
+    vector<int> indexes;
+    for(int i = 0; i < 10; i++) {
+        int val {rand()%20};
+        cout << val << ", ";
+        indexes.push_back(val);
+    }
+    
+    cout << "\nFind: ";
+    int value_to_find {0};
+    cin >> value_to_find;
+    
+    bool found = std::find(indexes.begin(), indexes.end(), value_to_find) != indexes.end();
+    
+    if (found) {
+        cout << "Found" << endl;
+    }
+    else {
+        cout << "Not found" << endl;
+    }
+    
 	return 0;
 }
