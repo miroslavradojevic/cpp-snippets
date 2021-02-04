@@ -17,10 +17,49 @@ class DataPoint
         }
 };
 
-int main()
-{   
+void create_data_point() {
     DataPoint dpt(42, 3.14);
     cout << dpt.id << " : " << dpt.value << endl;
+}
+
+void test_break_command() {
+    cout << "\ntest_break_command()" << endl;
+    
+    for (int k = 1; k <=5; k++) {
+        cout << k ;
+        if (k >= 3) break;
+        cout << " Do it" << endl;
+    }
+}
+
+void test_find_value() {
+    cout << "\ntest_find_value()" << endl;
+    
+    vector<int> indexes;
+    
+    for(int i = 0; i < 10; i++) {
+        int val {rand()%20};
+        cout << val << ", ";
+        indexes.push_back(val);
+    }
+    
+    cout << "\nFind: ";
+    int value_to_find {0};
+    cin >> value_to_find;
+    
+    bool found = std::find(indexes.begin(), indexes.end(), value_to_find) != indexes.end();
+    
+    if (found) {
+        cout << "Found" << endl;
+    }
+    else {
+        cout << "Not found" << endl;
+    }
+}
+
+int main()
+{   
+    create_data_point();
     
     std::vector<DataPoint> dpt_array;
     
@@ -46,27 +85,9 @@ int main()
         cout << i << " :" << dpt_array[i].id << " | " << dpt_array[i].value << endl;
     }
     
+    test_break_command();
     
-    //
-    vector<int> indexes;
-    for(int i = 0; i < 10; i++) {
-        int val {rand()%20};
-        cout << val << ", ";
-        indexes.push_back(val);
-    }
-    
-    cout << "\nFind: ";
-    int value_to_find {0};
-    cin >> value_to_find;
-    
-    bool found = std::find(indexes.begin(), indexes.end(), value_to_find) != indexes.end();
-    
-    if (found) {
-        cout << "Found" << endl;
-    }
-    else {
-        cout << "Not found" << endl;
-    }
+    test_find_value();
     
 	return 0;
 }
