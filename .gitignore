@@ -33,4 +33,5 @@
 
 
 # Directories
-.codelite
+/.codelite
+/.vs
