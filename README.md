@@ -19,8 +19,9 @@ rmdir /s /q ".\build\"
 ```
 
 # Run 
+```
 .\Debug\executable.exe
-
+```
 
 # Compile (linux)
 
