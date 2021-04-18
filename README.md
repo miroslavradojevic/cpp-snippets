@@ -13,12 +13,12 @@ Alternatively, cmake call can use paths
 cmake -B [build_dir] -S [src_dir]
 ```
 
-# Clear build directory
+## Clear build directory
 ```
 rmdir /s /q ".\build\"
 ```
 
-# Run 
+## Run 
 ```
 .\Debug\executable.exe
 ```
