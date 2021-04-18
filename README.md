@@ -1,15 +1,27 @@
-# cpp-snippets
+# c++ snippets
 c++ code snippets for various purposes
 
-# compile in windows
+# Compile (windows)
+```
 mkdir build
 cd build
 cmake ..
 cmake --build . --config Debug
-# to clear build directory
-rmdir /s /q ".\build\"
-# run 
-.\Debug\executable.exe
+```
+Alternatively, cmake call can use paths
+```
+cmake -B [build_dir] -S [src_dir]
+```
 
-# compile in linux
+# Clear build directory
+```
+rmdir /s /q ".\build\"
+```
+
+# Run 
+```
+.\Debug\executable.exe
+```
+
+# Compile (linux)
 
