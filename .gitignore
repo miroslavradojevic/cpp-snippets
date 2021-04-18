@@ -35,3 +35,5 @@
 # Directories
 /.codelite
 /.vs
+/build/
+/out/
