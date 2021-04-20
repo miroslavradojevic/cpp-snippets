@@ -24,4 +24,9 @@ rmdir /s /q ".\build\"
 ```
 
 # Compile (linux)
-
+```
+mkdir build
+cd build
+cmake ..
+make
+```
