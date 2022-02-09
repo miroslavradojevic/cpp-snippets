@@ -18,11 +18,14 @@ add_executable(write_file src/writeFile.cpp)
 add_executable(replicate_txt_file_with_line_nums src/replicateTxtFileWithLineNums.cpp)
 add_executable(psetorient src/psetorient.cpp)
 
-message("Found OpenCV: " ${OpenCV_FOUND})
-message("OpenCV version: " ${OpenCV_VERSION})
 if (${OpenCV_FOUND})
+    message("OpenCV version: " ${OpenCV_VERSION})
+    
     add_executable(img_array_to_opencv src/img_array_to_opencv.cpp)
     target_link_libraries(img_array_to_opencv ${OpenCV_LIBS} stdc++fs) # https://stackoverflow.com/questions/33149878/experimentalfilesystem-linker-error
+    
+    add_executable(read_img_opencv src/read_img_opencv.cpp)
+    target_link_libraries(read_img_opencv ${OpenCV_LIBS})
 else()
     message("Could not find OpenCV")
 endif()
