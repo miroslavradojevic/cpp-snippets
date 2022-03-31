@@ -34,6 +34,23 @@ rmdir /s /q ".\build\"
 ```
 
 ## Compile (Linux)
+Install prerequisites: 
+- Cmake 
+```
+sudo apt  install cmake
+```
+- OpenCV
+-- Check if OpenCV is available:
+```
+pkg-config --modversion opencv
+```
+or
+```
+dpkg -l | grep libopencv
+```
+Use [install OpenCV through the source](InstallOpenCv.md) instructions.
+
+Build repo:
 ```
 mkdir build
 cd build
