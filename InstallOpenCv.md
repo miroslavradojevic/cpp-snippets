@@ -1,4 +1,4 @@
-### Install OpenCv from source
+### Install OpenCv from source (Ubuntu 20.04)
 1. Install build tools
 ```
 sudo apt install build-essential cmake git pkg-config libgtk-3-dev \
