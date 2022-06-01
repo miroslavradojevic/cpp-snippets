@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 cmake_minimum_required(VERSION 3.1.0) # 3.10.2
 # enable c++17 https://stackoverflow.com/questions/45688522/how-to-enable-c17-in-cmake
 set (CMAKE_CXX_STANDARD 11) # 17
