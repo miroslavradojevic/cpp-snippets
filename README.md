@@ -1,5 +1,4 @@
-# c++ snippets
-c++ code snippets for various purposes
+c++ snippets for various purposes
 
 # Compile (windows)
 ```
@@ -30,3 +29,4 @@ cd build
 cmake ..
 make
 ```
+
