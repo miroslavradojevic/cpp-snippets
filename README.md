@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-c++ snippets for various purposes
-=======
-# c++ code snippets
->>>>>>> ae095c913f2935416b8816a568fa55b827429d1c
+## c++ code snippets
 
-## Compile (Windows)
+### Compile (Windows)
 Install [CMake](https://cmake.org/install), [MinGW-x64 c++ compiler](https://code.visualstudio.com/docs/languages/cpp#_example-install-mingwx64) and [OpenCV](https://github.com/huihut/OpenCV-MinGW-Build).
 
 Add the path to your Mingw-w64 bin folder to the Windows PATH environment variable.
@@ -37,7 +33,7 @@ rmdir /s /q ".\build\"
 .\Debug\executable.exe
 ```
 
-## Compile (Linux)
+### Compile (Linux)
 Install prerequisites: 
 - Cmake 
 ```
@@ -52,7 +48,9 @@ or
 ```
 dpkg -l | grep libopencv
 ```
-Use [install OpenCV through the source](InstallOpenCv.md) instructions.
+Use [install OpenCV](InstallOpenCv.md) instructions.
+- SimpleITK
+Use [install SimpleITK](InstallSimpleITK.md) instructions.
 
 Build repo:
 ```
