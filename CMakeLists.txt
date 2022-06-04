@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 3.1.0) # 3.10.2
+cmake_minimum_required(VERSION 3.10.2) # 3.10.2
 # enable c++17 https://stackoverflow.com/questions/45688522/how-to-enable-c17-in-cmake
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+# set(CMAKE_CXX_COMPILER /usr/bin/gcc-8)
 
 project(CppSnippets VERSION 1.0.0)
 

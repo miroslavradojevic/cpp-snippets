@@ -1,12 +1,21 @@
 #include <iostream>
+#include <filesystem>
 #include <SimpleITK.h>
 #include <sitkImageFileReader.h>
 #include "Input_Parser.h"
 
 namespace sitk = itk::simple;
+// namespace fs = std::filesystem;
 
 int main(int argc, char **argv)
 {
+
+    if (__cplusplus == 201703L) std::cout << "C++17\n";
+    else if (__cplusplus == 201402L) std::cout << "C++14\n";
+    else if (__cplusplus == 201103L) std::cout << "C++11\n";
+    else if (__cplusplus == 199711L) std::cout << "C++98\n";
+    else std::cout << "pre-standard C++\n";
+
     //std::cout << "read raw image" << std::endl;
     InputParser ip(argc, argv);
     if (ip.cmdOptionExists("-f"))
@@ -15,6 +24,11 @@ int main(int argc, char **argv)
         if (!filename.empty())
         {
             std::cout << "opening file: " << filename << std::endl;
+            // fs::path fpath{filename};
+
+            // std::cout << fpath.c_str() << std::endl;
+            // std::cout << fpath.parent_path() << std::endl;
+
             // TODO: check if it exists
 
             // read raw file from path
@@ -40,6 +54,7 @@ int main(int argc, char **argv)
             {
                 std::cout << "Read failed: " << e.what() << std::endl;
             }
+
             sitk::Image im = sitk::ReadImage("/home/miro/ev_battery_ct/img/image.mhd");
             std::cout << im.GetWidth() << "," << im.GetHeight() << "," << im.GetDepth() << "," << im.GetNumberOfPixels() << std::endl; 
             // std::vector<unsigned int> idx{ 0, 0, 0 };
