@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
-#include <experimental/filesystem>
+#include <filesystem>
 
 #include <opencv2/opencv.hpp>
 
@@ -35,11 +35,11 @@ int main()
     cv::Mat image = cv::Mat(Nrow, Ncol, CV_32FC1, image_arr);
 
     std::string homedir = getenv("HOME");
-    std::experimental::filesystem::path image_path(homedir);
+    std::filesystem::path image_path(homedir);
     image_path /= std::string("img_array_to_opencv_") + get_timestamp();
 
     // https://stackoverflow.com/questions/30937227/create-directory-in-c
-    std::experimental::filesystem::create_directories(image_path);
+    std::filesystem::create_directories(image_path);
 
     image_path /= get_timestamp() + ".tif";
 
