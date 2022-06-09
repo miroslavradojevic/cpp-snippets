@@ -14,13 +14,13 @@ message(STATUS "ITK_DIR: ${ITK_DIR}")
 find_package(SimpleITK)
 message(STATUS "SimpleITK_FOUND=${SimpleITK_FOUND}")
 if(SimpleITK_FOUND)
+    message(STATUS "SimpleITK version: " ${SimpleITK_VERSION})
+
     add_executable(read_raw src/image/read_raw.cpp src/Input_Parser.cpp)
     target_include_directories(read_raw PRIVATE ./src)
-    target_link_libraries(read_raw ${SimpleITK_LIBRARIES})
+    target_link_libraries(read_raw ${SimpleITK_LIBRARIES} stdc++fs)
     
-    # add_executable(read_raw src/image/read_raw.cpp src/Input_Parser.cpp)
     add_executable(sitk_image_ios src/image/sitk_image_ios.cpp)
-    # target_include_directories(read_raw PRIVATE ./src)
     target_link_libraries(sitk_image_ios ${SimpleITK_LIBRARIES})
 else()
     message(STATUS "SimpleITK not found!")
@@ -33,11 +33,12 @@ find_package(OpenCV)
 message(STATUS "OpenCV_FOUND=${OpenCV_FOUND}")
 if (OpenCV_FOUND)
     message(STATUS "OpenCV version: " ${OpenCV_VERSION})
+
     include_directories(${OpenCV_INCLUDE_DIRS})
     
     add_executable(img_array_to_opencv src/img_array_to_opencv.cpp)
     # https://stackoverflow.com/questions/33149878/experimentalfilesystem-linker-error
-    target_link_libraries(img_array_to_opencv ${OpenCV_LIBS})
+    target_link_libraries(img_array_to_opencv ${OpenCV_LIBS} stdc++fs)
     
     add_executable(read_img_opencv src/read_img_opencv.cpp)
     target_link_libraries(read_img_opencv ${OpenCV_LIBS})

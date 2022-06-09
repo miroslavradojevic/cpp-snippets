@@ -39,6 +39,6 @@ set(WRAP_R FALSE)
 ```
 mkdir ~/SimpleITK-build
 cd ~/SimpleITK-build
-cmake ~/<my_source_dir>/SimpleITK/SuperBuild
+cmake -Wno-dev ~/<my_source_dir>/SimpleITK/SuperBuild
 ```
 

@@ -1,4 +1,4 @@
-### Install OpenCv from source (Ubuntu 20.04)
+### Install OpenCV from source (Ubuntu 20.04)
 1. Install build tools
 ```
 sudo apt install build-essential cmake git pkg-config libgtk-3-dev \
@@ -10,24 +10,28 @@ libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
 ```
 2. Clone OpenCV's repositories
 ```
-mkdir ~/opencv_build && cd ~/opencv_build
+mkdir ~/opencv-build && cd ~/opencv-build
+
 git clone https://github.com/opencv/opencv.git
+cd opencv
+git checkout tags/4.6.0
+cd ..
+
 git clone https://github.com/opencv/opencv_contrib.git
+cd opencv_contrib
+git checkout tags/4.6.0
+cd ..
 ```
 3. Setup OpenCV build
 ```
-cd ~/opencv_build/opencv
-mkdir -p build && cd build
-```
-Set OpenCV build with CMake
-```
+mkdir -p ~/opencv-build/opencv/build && cd ~/opencv-build/opencv/build
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
--D CMAKE_INSTALL_PREFIX=/usr/local \
--D INSTALL_C_EXAMPLES=ON \
--D INSTALL_PYTHON_EXAMPLES=ON \
--D OPENCV_GENERATE_PKGCONFIG=ON \
--D OPENCV_EXTRA_MODULES_PATH=~/opencv_build/opencv_contrib/modules \
--D BUILD_EXAMPLES=ON ..
+      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D INSTALL_C_EXAMPLES=ON \
+      -D INSTALL_PYTHON_EXAMPLES=ON \
+      -D OPENCV_GENERATE_PKGCONFIG=ON \
+      -D OPENCV_EXTRA_MODULES_PATH=~/opencv-build/opencv_contrib/modules \
+      -D BUILD_EXAMPLES=ON ..
 ```
 4. Start compilation (use `nproc` to check the number of processor cores)
 ```
@@ -80,7 +84,7 @@ cmake -DCMAKE_BUILD_TYPE=Release
       -DBUILD_DOCS=ON ~/<my_source_dir>/opencv
 ```
 
-4. Build
+4. Build (use `nproc` to check the number of processor cores)
 ```
 make -j4
 ```
