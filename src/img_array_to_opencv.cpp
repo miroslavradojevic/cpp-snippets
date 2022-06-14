@@ -19,8 +19,8 @@ int main()
 {
     std::cout << "Float array -> OpenCv image" << std::endl;
 
-    int Nrow = 512;
-    int Ncol = 1024;
+    int Nrow = 16;
+    int Ncol = 32;
 
     float image_arr[Nrow][Ncol];
 
@@ -28,7 +28,7 @@ int main()
     {
         for (size_t j = 0; j < Ncol; j++)
         {
-            image_arr[i][j] = (10.0/((Nrow-1)*(Ncol-1))) * i * j;
+            image_arr[i][j] = (i+1)*(j+1); //(10.0/((Nrow-1)*(Ncol-1))) * i * j;
         }
     }
 
@@ -41,9 +41,8 @@ int main()
     // https://stackoverflow.com/questions/30937227/create-directory-in-c
     std::filesystem::create_directories(image_path);
 
-    image_path /= get_timestamp() + ".tif";
+    image_path /= get_timestamp() + ".tiff";
 
-    std::cout << "Saving " << image_path.string() << std::endl;
     cv::imwrite(image_path.string(), image);
-    std::cout << "done" << std::endl;
+    std::cout << "Saved " << image_path.string() << std::endl;
 }
