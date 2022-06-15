@@ -21,9 +21,11 @@ int main(int argc, char **argv)
 
             if (std::filesystem::exists(fpath)) {
                 
-                std::cout << fpath.extension() << std::endl;
+                std::cout << "extension: " << fpath.extension().c_str() << std::endl;
                 
                 if (std::strcmp(fpath.extension().c_str(), ".raw")==0) {
+
+                    std::cout << "test" << std::endl;
                     
                     if (false) {
                         // read raw file from path
@@ -48,7 +50,7 @@ int main(int argc, char **argv)
                     }
                     else {
                         // create .mhd file with read parameters
-                        
+                        std::cout << "Reading .raw file..." << std::endl;
                         std::cout << "Parent:\n" << fpath.parent_path().c_str() << std::endl;
                         std::cout << "Filename:\n" << fpath.filename().c_str() << std::endl;
                         fpath = std::filesystem::canonical(fpath.c_str()); // get absolute path
@@ -59,7 +61,6 @@ int main(int argc, char **argv)
                         // form new path in the same parent directory, under the same name and .mhd extension
                         std::cout << "MHD:\n" << fpath_mhd.c_str() << std::endl;
                         std::cout << "Original:\n" << fpath.c_str() << std::endl;
-                        
                         
                         std::ofstream outfile{fpath_mhd.c_str()};
                         if (!outfile) {
@@ -100,47 +101,40 @@ int main(int argc, char **argv)
                         remove(fpath_mhd.c_str()); // delete created file
                         
                         float* im_arr = im.GetBufferAsFloat();
-                        for (size_t i{0}; i<11; ++i)
-                            std::cout << i << ": " << im_arr[i] << " | "; 
-                        std::cout << std::endl;
+                        // for (size_t i{0}; i<11; ++i)
+                        //     std::cout << i << ": " << im_arr[i] << " | "; 
+                        // std::cout << std::endl;
                         
-                        std::cout << im_arr[0] << " | " << im_arr[1] << " ... " << im_arr[im.GetWidth()-2] << " | " << im_arr[im.GetWidth()-1] << std::endl;
-                        std::cout << im_arr[im.GetWidth()] << " | " << im_arr[im.GetWidth()+1] << " ... " << im_arr[2*im.GetWidth()-2] << " | " << im_arr[2*im.GetWidth()-1] << std::endl;
+                        // std::cout << im_arr[0] << " | " << im_arr[1] << " ... " << im_arr[im.GetWidth()-2] << " | " << im_arr[im.GetWidth()-1] << std::endl;
+                        // std::cout << im_arr[im.GetWidth()] << " | " << im_arr[im.GetWidth()+1] << " ... " << im_arr[2*im.GetWidth()-2] << " | " << im_arr[2*im.GetWidth()-1] << std::endl;
                         
                         
                         // convert into multi-dimensional array, 2D for processing in opencv
-                        // alloc dynamically
-                        int Wo = 20;
-                        int Ho = 10;
-                        float** im_arr2d = new float*[Ho];
-                        for (size_t i=0; i<Ho; ++i)
-                            im_arr2d[i] = new float[Wo];
+                        // dynamic alloc (not working)
+                        // int Wo = 20;
+                        // int Ho = 10;
+                        // float** im_arr2d = new float*[Ho];
+                        // for (size_t i=0; i<Ho; ++i)
+                        //     im_arr2d[i] = new float[Wo];
                             
-                        float im_arr2d_[Ho][Wo]; // static alloc
+                        float im_arr2d_[im.GetHeight()][im.GetWidth()]; // static alloc (necessary)
                         
-                        int z = 0;
+                        int z = 21;
                         int c = 0;
-                        for (size_t row = 0; row < Ho; ++row) { // im.GetHeight()
-                            std::cout << row << " : ";
-                            for (size_t col = 0; col < Wo; ++col) { // im.GetWidth()
+                        for (size_t row = 0; row < im.GetHeight(); ++row) {
+                            for (size_t col = 0; col < im.GetWidth(); ++col) {
                                 // c + im.GetNumberOfComponentsPerPixel()*(row+im.GetWidth()*(col+im.GetHeight()*z))
-//                                im_arr2d[row][col] = im_arr[row + im.GetHeight()*col];
-//                                im_arr2d[row][col] = im_arr[row + im.GetWidth()*col];
-                                im_arr2d[row][col] = (row+1)*col;//im_arr[col + im.GetWidth()*row];
-                                im_arr2d_[row][col] = (row+1)*col;
-                                std::cout << im_arr2d[row][col] << " "; 
-//                                im_arr2d[row][col] = im_arr[col + im.GetHeight()*row];
+                                im_arr2d_[row][col] = im_arr[z*(im.GetWidth()*im.GetHeight()) + col + im.GetWidth()*row];
                                 // crop
-//                                if (im_arr2d[row][col]>0.05) im_arr2d[row][col] = 0.05;
-//                                if (im_arr2d[row][col]<0.00) im_arr2d[row][col] = 0.00;
+                               if (im_arr2d_[row][col]>0.05) im_arr2d_[row][col] = 0.05;
+                               if (im_arr2d_[row][col]<0.00) im_arr2d_[row][col] = 0.00;
                                 
                             }
-                            std::cout << std::endl;
                         }
                         
                         std::filesystem::path fpath_out{fpath};
                         fpath_out.replace_extension(".tiff");
-                        cv::Mat img = cv::Mat(Ho, Wo, CV_32F, im_arr2d_);
+                        cv::Mat img = cv::Mat(im.GetHeight(), im.GetWidth(), CV_32F, im_arr2d_);
                         std::vector<int> compression_params;
                         compression_params.push_back(cv::IMWRITE_TIFF_COMPRESSION);
                         compression_params.push_back(1);
@@ -148,10 +142,9 @@ int main(int argc, char **argv)
                         std::cout << fpath_out.c_str() << std::endl;
                         
                         // free memory
-                        for (size_t i=0; i<Ho; ++i)
-                            delete [] im_arr2d[i];
-                            
-                        delete [] im_arr2d; //im_arr2d = 0;
+                        // for (size_t i=0; i<Ho; ++i)
+                        //     delete [] im_arr2d[i];
+                        // delete [] im_arr2d;
                         
                     }
 

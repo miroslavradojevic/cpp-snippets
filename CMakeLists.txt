@@ -34,8 +34,11 @@ if (OpenCV_FOUND)
     
     add_executable(img_array_to_opencv src/img_array_to_opencv.cpp)
     # https://stackoverflow.com/questions/33149878/experimentalfilesystem-linker-error
-    target_link_libraries(img_array_to_opencv ${OpenCV_LIBS}) # stdc++fs
+    target_link_libraries(img_array_to_opencv ${OpenCV_LIBS}) # stdc++fs (if using g++-8)
     
+    add_executable(array_to_opencv src/array_to_opencv.cpp)
+    target_link_libraries(array_to_opencv ${OpenCV_LIBS})
+
     add_executable(read_img_opencv src/read_img_opencv.cpp)
     target_link_libraries(read_img_opencv ${OpenCV_LIBS})
 else()
@@ -46,7 +49,7 @@ if (SimpleITK_FOUND AND OpenCV_FOUND)
     # message(STATUS "Both are found")
     add_executable(read_raw src/image/read_raw.cpp src/Input_Parser.cpp)
     target_include_directories(read_raw PRIVATE ./src)
-    target_link_libraries(read_raw ${SimpleITK_LIBRARIES} ${OpenCV_LIBS}) # stdc++fs
+    target_link_libraries(read_raw ${OpenCV_LIBS} ${SimpleITK_LIBRARIES}) # stdc++fs (if using g++-8, not guaranteed to link correctly)
 endif()
 
 add_executable(check_cpp src/check.cpp)
