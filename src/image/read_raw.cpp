@@ -7,7 +7,14 @@
 #include "Input_Parser.h"
 
 namespace sitk = itk::simple;
-// namespace fs = std::filesystem;
+
+std::vector<cv::Mat> read_raw(std::string raw_img_path, int width, int height, int depth, bool is_big_endian, std::string type){
+    std::filesystem::path fpath = std::filesystem::canonical(raw_img_path); // get absolute path
+    std::vector<cv::Mat> out;
+    return out;
+};
+
+
 
 int main(int argc, char **argv)
 {
@@ -25,8 +32,6 @@ int main(int argc, char **argv)
                 
                 if (std::strcmp(fpath.extension().c_str(), ".raw")==0) {
 
-                    std::cout << "test" << std::endl;
-                    
                     if (false) {
                         // read raw file from path
                         sitk::ImageFileReader reader;
@@ -46,7 +51,6 @@ int main(int argc, char **argv)
                             std::cerr << "Read failed: " << e.what() << std::endl;
                             return 1;
                         }
-                        
                     }
                     else {
                         // create .mhd file with read parameters
@@ -79,8 +83,8 @@ int main(int argc, char **argv)
                         outfile << "ElementDataFile = " << fpath.c_str() << std::endl; // must be the last entry
                         outfile.close();
                         
-                        std::cout << "Absolute:\n" << fpath.is_absolute() << std::endl;
-                        std::cout << "Has root path:\n" << fpath.has_root_path() << std::endl;
+                        // std::cout << "Absolute:\n" << fpath.is_absolute() << std::endl;
+                        // std::cout << "Has root path:\n" << fpath.has_root_path() << std::endl;
                         
                         sitk::Image im;
                         try{
@@ -100,61 +104,48 @@ int main(int argc, char **argv)
                         
                         remove(fpath_mhd.c_str()); // delete created file
                         
-                        float* im_arr = im.GetBufferAsFloat();
-                        // for (size_t i{0}; i<11; ++i)
-                        //     std::cout << i << ": " << im_arr[i] << " | "; 
-                        // std::cout << std::endl;
+                        float* im_buf = im.GetBufferAsFloat();
                         
-                        // std::cout << im_arr[0] << " | " << im_arr[1] << " ... " << im_arr[im.GetWidth()-2] << " | " << im_arr[im.GetWidth()-1] << std::endl;
-                        // std::cout << im_arr[im.GetWidth()] << " | " << im_arr[im.GetWidth()+1] << " ... " << im_arr[2*im.GetWidth()-2] << " | " << im_arr[2*im.GetWidth()-1] << std::endl;
-                        
-                        
-                        // convert into multi-dimensional array, 2D for processing in opencv
-                        // dynamic alloc (not working)
-                        // int Wo = 20;
-                        // int Ho = 10;
-                        // float** im_arr2d = new float*[Ho];
-                        // for (size_t i=0; i<Ho; ++i)
-                        //     im_arr2d[i] = new float[Wo];
-                            
-                        float im_arr2d_[im.GetHeight()][im.GetWidth()]; // static alloc (necessary)
+                        float im_arr2d[im.GetHeight()][im.GetWidth()]; // static alloc necessary, dynamic alloc (throws fault)
                         
                         int z = 21;
                         int c = 0;
-                        for (size_t row = 0; row < im.GetHeight(); ++row) {
-                            for (size_t col = 0; col < im.GetWidth(); ++col) {
-                                // c + im.GetNumberOfComponentsPerPixel()*(row+im.GetWidth()*(col+im.GetHeight()*z))
-                                im_arr2d_[row][col] = im_arr[z*(im.GetWidth()*im.GetHeight()) + col + im.GetWidth()*row];
-                                // crop
-                               if (im_arr2d_[row][col]>0.05) im_arr2d_[row][col] = 0.05;
-                               if (im_arr2d_[row][col]<0.00) im_arr2d_[row][col] = 0.00;
-                                
+                        // store average along z-dimension into a 2D array, compute iteratively
+                        float pixval = 0;
+                        for (size_t z = 0; z < im.GetDepth(); ++z)
+                        {
+                            for (size_t row = 0; row < im.GetHeight(); ++row) {
+                                for (size_t col = 0; col < im.GetWidth(); ++col) {
+                                    pixval = im_buf[c + im.GetNumberOfComponentsPerPixel()*(z*(im.GetWidth()*im.GetHeight()) + col + im.GetWidth()*row)];
+                                    // crop
+                                    if (pixval>0.05) pixval = 0.05;
+                                    if (pixval<0.00) pixval = 0.00;
+                                    // compute iterative mean for each pixel along z-axis
+                                    // https://www.heikohoffmann.de/htmlthesis/node134.html
+                                    if (z == 0) 
+                                        im_arr2d[row][col] = pixval;
+                                    else 
+                                        im_arr2d[row][col] = ((float)z/(z+1)) * im_arr2d[row][col] + pixval/(z+1);
+                                }
                             }
                         }
                         
                         std::filesystem::path fpath_out{fpath};
                         fpath_out.replace_extension(".tiff");
-                        cv::Mat img = cv::Mat(im.GetHeight(), im.GetWidth(), CV_32F, im_arr2d_);
+                        cv::Mat img = cv::Mat(im.GetHeight(), im.GetWidth(), CV_32F, im_arr2d);
+
+                        // write to disk
                         std::vector<int> compression_params;
                         compression_params.push_back(cv::IMWRITE_TIFF_COMPRESSION);
                         compression_params.push_back(1);
                         cv::imwrite(fpath_out.c_str(), img, compression_params);
                         std::cout << fpath_out.c_str() << std::endl;
                         
-                        // free memory
-                        // for (size_t i=0; i<Ho; ++i)
-                        //     delete [] im_arr2d[i];
-                        // delete [] im_arr2d;
-                        
                     }
-
                 }   
                 else {
                     std::cerr << "File " << fpath.c_str() << " does not have .raw extension" << std::endl;
                 }
-                
-                
-                    
             }
             else {
                 std::cerr << "File " << fpath.c_str() << " does not exist" << std::endl;
