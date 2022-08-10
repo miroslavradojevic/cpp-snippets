@@ -14,8 +14,6 @@ std::vector<cv::Mat> read_raw(std::string raw_img_path, int width, int height, i
     return out;
 };
 
-
-
 int main(int argc, char **argv)
 {
     InputParser ip(argc, argv);
