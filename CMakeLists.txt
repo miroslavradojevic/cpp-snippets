@@ -39,8 +39,12 @@ if (OpenCV_FOUND)
     add_executable(array_to_opencv src/array_to_opencv.cpp)
     target_link_libraries(array_to_opencv ${OpenCV_LIBS})
 
+    add_executable(opencv_to_array src/opencv_to_array.cpp)
+    target_link_libraries(opencv_to_array ${OpenCV_LIBS})
+
     add_executable(read_img_opencv src/read_img_opencv.cpp)
     target_link_libraries(read_img_opencv ${OpenCV_LIBS})
+    
 else()
     message(STATUS "OpenCV not found!")
 endif()
@@ -50,6 +54,9 @@ if (SimpleITK_FOUND AND OpenCV_FOUND)
     add_executable(read_raw src/image/read_raw.cpp src/Input_Parser.cpp)
     target_include_directories(read_raw PRIVATE ./src)
     target_link_libraries(read_raw ${OpenCV_LIBS} ${SimpleITK_LIBRARIES}) # stdc++fs (if using g++-8, not guaranteed to link correctly)
+    
+    add_executable(cpbd src/image/cpbd.cpp)
+    target_link_libraries(cpbd ${OpenCV_LIBS})
 endif()
 
 add_executable(check_cpp src/check.cpp)
