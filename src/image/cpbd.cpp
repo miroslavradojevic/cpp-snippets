@@ -2,8 +2,10 @@
 #include <filesystem>
 #include <opencv2/opencv.hpp>
 
-void sobel1(){
-    std::cout << "sobel1" << std::endl;
+cv::Mat simple_thinning(cv::Mat strength){
+    std::cout << "simple_thinning" << std::endl;
+    // use opencv functions cv::compare, cv::warpAffine
+
 }
 
 std::string openCVType2str(int type) {
