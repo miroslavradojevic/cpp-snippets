@@ -44,6 +44,10 @@ if (OpenCV_FOUND)
 
     add_executable(read_img_opencv src/read_img_opencv.cpp)
     target_link_libraries(read_img_opencv ${OpenCV_LIBS})
+
+    add_executable(read_raw_2 src/image/read_raw_2.cpp src/Input_Parser.cpp)
+    target_include_directories(read_raw_2 PRIVATE ./src)
+    target_link_libraries(read_raw_2 ${OpenCV_LIBS})
     
 else()
     message(STATUS "OpenCV not found!")
@@ -67,3 +71,6 @@ add_executable(write_file src/writeFile.cpp)
 add_executable(replicate_txt_file_with_line_nums src/replicateTxtFileWithLineNums.cpp)
 add_executable(pos src/pos.cpp)
 add_executable(psetorient src/psetorient.cpp)
+add_executable(test_endian src/test_endian.cpp)
+
+

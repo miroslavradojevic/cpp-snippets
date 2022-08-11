@@ -1,6 +1,3 @@
-#include <string>
-#include <vector>
-#include <algorithm>
 #include "Input_Parser.h"
 
 InputParser::InputParser(int &argc, char **argv)

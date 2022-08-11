@@ -2,7 +2,7 @@
 #include <filesystem>
 #include <opencv2/opencv.hpp>
 
-cv::Mat simple_thinning(cv::Mat strength){
+void simple_thinning(cv::Mat strength){
     std::cout << "simple_thinning" << std::endl;
     // use opencv functions cv::compare, cv::warpAffine
 

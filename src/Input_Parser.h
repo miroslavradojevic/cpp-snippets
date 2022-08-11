@@ -1,6 +1,10 @@
 #ifndef _INPUT_PARSER_H_
 #define _INPUT_PARSER_H_
 
+#include <vector>
+#include <string>
+#include <algorithm>
+
 class InputParser{
     private:
     std::vector <std::string> tokens;
