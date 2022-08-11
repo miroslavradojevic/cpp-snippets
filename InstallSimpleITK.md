@@ -21,6 +21,7 @@ git clone https://github.com/SimpleITK/SimpleITK.git
 ```
 Select the version (tag)
 ```
+cd ~/<my_source_dir>/SimpleITK
 git checkout tags/v2.1.1.2
 ```
 2. Exclude wrappers for other languages 
@@ -40,5 +41,6 @@ set(WRAP_R FALSE)
 mkdir ~/SimpleITK-build
 cd ~/SimpleITK-build
 cmake -Wno-dev ~/<my_source_dir>/SimpleITK/SuperBuild
+make -j$(nproc)
 ```
 
