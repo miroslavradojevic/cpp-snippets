@@ -48,6 +48,9 @@ if (OpenCV_FOUND)
     add_executable(read_raw_2 src/image/read_raw_2.cpp src/Input_Parser.cpp)
     target_include_directories(read_raw_2 PRIVATE ./src)
     target_link_libraries(read_raw_2 ${OpenCV_LIBS})
+
+    add_executable(circle src/image/circle.cpp)
+    target_link_libraries(circle ${OpenCV_LIBS})
     
 else()
     message(STATUS "OpenCV not found!")
